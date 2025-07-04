@@ -1,0 +1,47 @@
+---
+alwaysApply: true
+---
+Use the following project folder structure rules when creating or suggesting files, components, or code organization:
+
+1. 📁 components/ui  
+   - Contains reusable presentational UI components used across the project.  
+   - Examples: `Button`, `Input`, `Modal`, `Checkbox`, `Select`.
+
+2. 📁 features  
+   - Organize all domain-related logic and components by feature.  
+   - Each feature folder may include its own `components`, `hooks`, `services`, or `store`.  
+   - Examples:  
+     - `auth/` → login, signup, reset password  
+     - `dashboard/` → charts, analytics, widgets
+
+3. 📁 hooks  
+   - Contains reusable custom React hooks.  
+   - Hooks should encapsulate stateful logic reusable across multiple features.  
+   - Examples: `useLocalStorage`, `useDebounce`, `useClickOutside`.
+
+4. 📁 services  
+   - Responsible for API communication and external integrations.  
+   - Organize by domain if necessary.  
+   - Examples: `authApi.ts`, `productApi.ts`, `axiosInstance.ts`.
+
+5. 📁 utils  
+   - Contains pure utility functions with no dependencies on UI or state.  
+   - Examples: `formatDate.ts`, `validateEmail.ts`, `debounce.ts`.
+
+6. 📁 store  
+   - Centralized global state management (e.g., Zustand, Redux).  
+   - Organize by logical slices.  
+   - Examples: `authStore.ts`, `uiStore.ts`, `themeStore.ts`.
+
+7. 📁 types (optional but recommended)  
+   - Central location for shared TypeScript types and interfaces.  
+   - Examples: `User.ts`, `ApiResponse.ts`, `Product.ts`.
+
+🧠 General Principles:
+- Always prefer co-locating files by feature (inside `features/`) if they serve a specific domain.
+- Shared logic (UI, hooks, utils, types) should go in their respective root-level folders.
+- File and folder names must use consistent casing (prefer kebab-case for folders, PascalCase for components).
+- Avoid deeply nested structures unless logically required.
+
+Follow this structure strictly when auto-generating or suggesting files, code snippets, or folder locations.
+
