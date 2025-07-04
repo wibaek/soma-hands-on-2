@@ -1,6 +1,6 @@
 // API 관련 상수
 export const API_CONFIG = {
-  AIR_KOREA_BASE_URL: "http://apis.data.go.kr/B552584",
+  AIR_KOREA_BASE_URL: "https://apis.data.go.kr/B552584",
   AIR_KOREA_API_KEY: import.meta.env.VITE_AIR_KOREA_API_KEY || "",
   KAKAO_MAP_API_KEY: import.meta.env.VITE_KAKAO_MAP_API_KEY || "",
 };

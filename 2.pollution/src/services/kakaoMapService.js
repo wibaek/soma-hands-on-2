@@ -9,22 +9,43 @@ let markerManager = null;
  */
 export const loadKakaoMapSDK = () => {
   return new Promise((resolve, reject) => {
+    // API 키가 없으면 에러 메시지 표시
+    if (
+      !API_CONFIG.KAKAO_MAP_API_KEY ||
+      API_CONFIG.KAKAO_MAP_API_KEY === "your_kakao_map_api_key_here"
+    ) {
+      console.error("카카오맵 API 키가 설정되지 않았습니다.");
+      console.log(
+        "1. https://developers.kakao.com 에서 API 키를 발급받으세요."
+      );
+      console.log(
+        "2. .env 파일에 VITE_KAKAO_MAP_API_KEY=발급받은키 를 추가하세요."
+      );
+      reject(new Error("카카오맵 API 키가 필요합니다. 콘솔을 확인하세요."));
+      return;
+    }
+
     if (window.kakao && window.kakao.maps) {
+      console.log("카카오맵 SDK 이미 로드됨");
       resolve(true);
       return;
     }
 
+    console.log("카카오맵 SDK 로드 중...");
     const script = document.createElement("script");
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${API_CONFIG.KAKAO_MAP_API_KEY}&autoload=false`;
     script.async = true;
 
     script.onload = () => {
+      console.log("카카오맵 SDK 스크립트 로드 완료");
       window.kakao.maps.load(() => {
+        console.log("카카오맵 API 초기화 완료");
         resolve(true);
       });
     };
 
     script.onerror = () => {
+      console.error("카카오맵 SDK 스크립트 로드 실패");
       reject(new Error("카카오맵 SDK 로드 실패"));
     };
 
