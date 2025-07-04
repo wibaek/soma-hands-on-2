@@ -1,113 +1,109 @@
+// 스탑워치 클래스 정의
 class Stopwatch {
   constructor() {
-    this.isRunning = false;
-    this.startTime = 0;
-    this.elapsedTime = 0;
-    this.lapTimes = [];
-    this.interval = null;
+    // 시간 관련 변수들
+    this.startTime = 0; // 시작 시간
+    this.elapsedTime = 0; // 경과 시간
+    this.isRunning = false; // 실행 상태
+    this.intervalId = null; // 인터벌 ID
+    this.lapTimes = []; // 랩 타임 배열
 
-    this.initializeElements();
-    this.bindEvents();
-  }
-
-  initializeElements() {
+    // DOM 요소들
     this.hoursElement = document.getElementById("hours");
     this.minutesElement = document.getElementById("minutes");
     this.secondsElement = document.getElementById("seconds");
     this.millisecondsElement = document.getElementById("milliseconds");
 
     this.startBtn = document.getElementById("startBtn");
-    this.pauseBtn = document.getElementById("pauseBtn");
+    this.stopBtn = document.getElementById("stopBtn");
     this.resetBtn = document.getElementById("resetBtn");
     this.lapBtn = document.getElementById("lapBtn");
-
     this.lapList = document.getElementById("lapList");
+
+    // 이벤트 리스너 등록
+    this.initializeEventListeners();
   }
 
-  bindEvents() {
+  // 이벤트 리스너 초기화
+  initializeEventListeners() {
     this.startBtn.addEventListener("click", () => this.start());
-    this.pauseBtn.addEventListener("click", () => this.pause());
+    this.stopBtn.addEventListener("click", () => this.stop());
     this.resetBtn.addEventListener("click", () => this.reset());
-    this.lapBtn.addEventListener("click", () => this.lap());
-
-    // 키보드 단축키
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Space") {
-        e.preventDefault();
-        if (this.isRunning) {
-          this.pause();
-        } else {
-          this.start();
-        }
-      } else if (e.code === "KeyL") {
-        this.lap();
-      } else if (e.code === "KeyR") {
-        this.reset();
-      }
-    });
+    this.lapBtn.addEventListener("click", () => this.recordLap());
   }
 
+  // 스탑워치 시작
   start() {
     if (!this.isRunning) {
       this.isRunning = true;
       this.startTime = Date.now() - this.elapsedTime;
-      this.interval = setInterval(() => this.updateDisplay(), 10);
+      this.intervalId = setInterval(() => this.updateDisplay(), 10);
 
+      // 버튼 상태 변경
       this.startBtn.disabled = true;
-      this.pauseBtn.disabled = false;
+      this.stopBtn.disabled = false;
       this.lapBtn.disabled = false;
-
-      this.startBtn.textContent = "재시작";
     }
   }
 
-  pause() {
+  // 스탑워치 정지
+  stop() {
     if (this.isRunning) {
       this.isRunning = false;
-      clearInterval(this.interval);
+      clearInterval(this.intervalId);
       this.elapsedTime = Date.now() - this.startTime;
 
+      // 버튼 상태 변경
       this.startBtn.disabled = false;
-      this.pauseBtn.disabled = true;
+      this.stopBtn.disabled = true;
       this.lapBtn.disabled = true;
-
-      this.startBtn.textContent = "시작";
     }
   }
 
+  // 스탑워치 리셋
   reset() {
-    this.pause();
+    this.stop();
     this.elapsedTime = 0;
     this.lapTimes = [];
     this.updateDisplay();
-    this.updateLapList();
+    this.clearLapList();
 
-    this.startBtn.textContent = "시작";
+    // 버튼 상태 초기화
+    this.startBtn.disabled = false;
+    this.stopBtn.disabled = true;
     this.lapBtn.disabled = true;
   }
 
-  lap() {
+  // 랩 타임 기록
+  recordLap() {
     if (this.isRunning) {
-      const currentTime = this.elapsedTime + (Date.now() - this.startTime);
+      const currentTime = this.getCurrentTime();
       this.lapTimes.push(currentTime);
-      this.updateLapList();
+      this.addLapToList(this.lapTimes.length, currentTime);
     }
   }
 
-  updateDisplay() {
-    const currentTime = this.elapsedTime + (Date.now() - this.startTime);
-    const time = this.formatTime(currentTime);
-
-    this.hoursElement.textContent = time.hours;
-    this.minutesElement.textContent = time.minutes;
-    this.secondsElement.textContent = time.seconds;
-    this.millisecondsElement.textContent = time.milliseconds;
+  // 현재 시간 계산
+  getCurrentTime() {
+    return Date.now() - this.startTime;
   }
 
+  // 시간 표시 업데이트
+  updateDisplay() {
+    const time = this.isRunning ? this.getCurrentTime() : this.elapsedTime;
+    const timeComponents = this.formatTime(time);
+
+    this.hoursElement.textContent = timeComponents.hours;
+    this.minutesElement.textContent = timeComponents.minutes;
+    this.secondsElement.textContent = timeComponents.seconds;
+    this.millisecondsElement.textContent = timeComponents.milliseconds;
+  }
+
+  // 시간 포맷팅 (시:분:초.밀리초)
   formatTime(milliseconds) {
-    const hours = Math.floor(milliseconds / 3600000);
-    const minutes = Math.floor((milliseconds % 3600000) / 60000);
-    const seconds = Math.floor((milliseconds % 60000) / 1000);
+    const hours = Math.floor(milliseconds / (1000 * 60 * 60));
+    const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
     const ms = Math.floor((milliseconds % 1000) / 10);
 
     return {
@@ -118,53 +114,31 @@ class Stopwatch {
     };
   }
 
-  updateLapList() {
+  // 랩 타임을 리스트에 추가
+  addLapToList(lapNumber, time) {
+    const timeComponents = this.formatTime(time);
+    const timeString = `${timeComponents.hours}:${timeComponents.minutes}:${timeComponents.seconds}.${timeComponents.milliseconds}`;
+
+    const lapItem = document.createElement("div");
+    lapItem.className = "lap-item";
+    lapItem.innerHTML = `
+            <span class="lap-number">#${lapNumber}</span>
+            <span class="lap-time">${timeString}</span>
+        `;
+
+    this.lapList.appendChild(lapItem);
+
+    // 스크롤을 맨 아래로 이동
+    this.lapList.scrollTop = this.lapList.scrollHeight;
+  }
+
+  // 랩 리스트 초기화
+  clearLapList() {
     this.lapList.innerHTML = "";
-
-    if (this.lapTimes.length === 0) {
-      return;
-    }
-
-    this.lapTimes.forEach((lapTime, index) => {
-      const li = document.createElement("li");
-      const lapNumber = document.createElement("span");
-      const lapTimeSpan = document.createElement("span");
-      const lapDifference = document.createElement("span");
-
-      lapNumber.className = "lap-number";
-      lapTimeSpan.className = "lap-time";
-      lapDifference.className = "lap-difference";
-
-      const time = this.formatTime(lapTime);
-      lapNumber.textContent = `#${index + 1}`;
-      lapTimeSpan.textContent = `${time.hours}:${time.minutes}:${time.seconds}.${time.milliseconds}`;
-
-      // 이전 랩과의 차이 계산
-      if (index > 0) {
-        const difference = lapTime - this.lapTimes[index - 1];
-        const diffTime = this.formatTime(difference);
-        const sign = difference >= 0 ? "+" : "-";
-        lapDifference.textContent = `${sign}${diffTime.minutes}:${diffTime.seconds}.${diffTime.milliseconds}`;
-        lapDifference.style.color = difference >= 0 ? "#f44336" : "#4CAF50";
-      } else {
-        lapDifference.textContent = "기준";
-      }
-
-      li.appendChild(lapNumber);
-      li.appendChild(lapTimeSpan);
-      li.appendChild(lapDifference);
-      this.lapList.appendChild(li);
-    });
   }
 }
 
-// 애플리케이션 초기화
+// 페이지 로드 시 스탑워치 초기화
 document.addEventListener("DOMContentLoaded", () => {
   new Stopwatch();
-
-  // 사용법 안내
-  console.log("스탑워치 사용법:");
-  console.log("- 스페이스바: 시작/일시정지");
-  console.log("- L 키: 랩 기록");
-  console.log("- R 키: 리셋");
 });

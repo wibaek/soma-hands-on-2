@@ -8,31 +8,32 @@
   </head>
   <body>
     <div class="container">
-      <div class="stopwatch">
-        <h1>스탑워치</h1>
-        <div class="display">
-          <div class="time-display">
-            <span id="hours">00</span>: <span id="minutes">00</span>:
-            <span id="seconds">00</span>
-          </div>
-          <div class="milliseconds">
-            <span id="milliseconds">00</span>
-          </div>
-        </div>
-        <div class="controls">
-          <button id="startBtn" class="btn start">시작</button>
-          <button id="pauseBtn" class="btn pause" disabled>일시정지</button>
-          <button id="resetBtn" class="btn reset">리셋</button>
-        </div>
-        <div class="lap-section">
-          <button id="lapBtn" class="btn lap" disabled>랩</button>
-          <div class="lap-list">
-            <h3>랩 기록</h3>
-            <ul id="lapList"></ul>
-          </div>
+      <h1>스탑워치</h1>
+
+      <!-- 시간 표시 영역 -->
+      <div class="time-display">
+        <span id="hours">00</span>: <span id="minutes">00</span>:
+        <span id="seconds">00</span>.
+        <span id="milliseconds">00</span>
+      </div>
+
+      <!-- 버튼 영역 -->
+      <div class="controls">
+        <button id="startBtn" class="btn start">시작</button>
+        <button id="stopBtn" class="btn stop" disabled>정지</button>
+        <button id="resetBtn" class="btn reset">리셋</button>
+        <button id="lapBtn" class="btn lap" disabled>랩</button>
+      </div>
+
+      <!-- 랩 타임 기록 영역 -->
+      <div class="lap-container">
+        <h3>랩 타임 기록</h3>
+        <div id="lapList" class="lap-list">
+          <!-- 랩 타임들이 여기에 추가됩니다 -->
         </div>
       </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>

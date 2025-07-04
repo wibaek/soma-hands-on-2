@@ -1,3 +1,4 @@
+/* 전체 페이지 스타일 */
 * {
   margin: 0;
   padding: 0;
@@ -5,207 +6,209 @@
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Arial", sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  color: #333;
 }
 
 .container {
-  width: 100%;
-  max-width: 500px;
-  padding: 20px;
-}
-
-.stopwatch {
-  background: rgba(255, 255, 255, 0.95);
+  background: white;
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
 }
 
 h1 {
-  text-align: center;
-  color: #333;
+  color: #4a5568;
   margin-bottom: 30px;
   font-size: 2.5rem;
   font-weight: 300;
 }
 
-.display {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
+/* 시간 표시 영역 스타일 */
 .time-display {
-  font-size: 4rem;
-  font-weight: 200;
-  color: #333;
+  font-size: 3.5rem;
+  font-weight: 300;
   font-family: "Courier New", monospace;
-  margin-bottom: 10px;
+  color: #2d3748;
+  margin: 30px 0;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 15px;
+  border: 2px solid #e2e8f0;
 }
 
-.milliseconds {
-  font-size: 1.5rem;
-  color: #666;
-  font-family: "Courier New", monospace;
+.time-display span {
+  display: inline-block;
+  min-width: 60px;
 }
 
+/* 버튼 영역 스타일 */
 .controls {
   display: flex;
   gap: 15px;
   justify-content: center;
-  margin-bottom: 30px;
   flex-wrap: wrap;
+  margin: 30px 0;
 }
 
 .btn {
-  padding: 15px 30px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 50px;
+  border-radius: 25px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 120px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  min-width: 80px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none !important;
-}
-
-.btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: none;
+  box-shadow: none;
 }
 
 .start {
-  background: linear-gradient(45deg, #4caf50, #45a049);
+  background: #48bb78;
   color: white;
 }
 
 .start:hover:not(:disabled) {
-  background: linear-gradient(45deg, #45a049, #4caf50);
+  background: #38a169;
 }
 
-.pause {
-  background: linear-gradient(45deg, #ff9800, #f57c00);
+.stop {
+  background: #f56565;
   color: white;
 }
 
-.pause:hover:not(:disabled) {
-  background: linear-gradient(45deg, #f57c00, #ff9800);
+.stop:hover:not(:disabled) {
+  background: #e53e3e;
 }
 
 .reset {
-  background: linear-gradient(45deg, #f44336, #d32f2f);
+  background: #4299e1;
   color: white;
 }
 
 .reset:hover:not(:disabled) {
-  background: linear-gradient(45deg, #d32f2f, #f44336);
+  background: #3182ce;
 }
 
 .lap {
-  background: linear-gradient(45deg, #2196f3, #1976d2);
+  background: #ed8936;
   color: white;
 }
 
 .lap:hover:not(:disabled) {
-  background: linear-gradient(45deg, #1976d2, #2196f3);
+  background: #dd6b20;
 }
 
-.lap-section {
+/* 랩 타임 기록 영역 스타일 */
+.lap-container {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.lap-container h3 {
+  color: #4a5568;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
   text-align: center;
 }
 
 .lap-list {
-  margin-top: 30px;
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
-}
-
-.lap-list h3 {
-  color: #333;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-}
-
-#lapList {
-  list-style: none;
-  padding: 0;
-}
-
-#lapList li {
-  background: #f8f9fa;
-  margin: 8px 0;
-  padding: 15px;
+  background: #f7fafc;
   border-radius: 10px;
-  border-left: 4px solid #2196f3;
-  font-family: "Courier New", monospace;
-  font-size: 1.1rem;
-  color: #333;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.lap-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-#lapList li:first-child {
-  background: #e3f2fd;
-  border-left-color: #4caf50;
-  font-weight: bold;
+  padding: 10px 15px;
+  margin: 5px 0;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #4299e1;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
 }
 
 .lap-number {
   font-weight: bold;
-  color: #2196f3;
-  min-width: 40px;
+  color: #4299e1;
+  min-width: 30px;
 }
 
 .lap-time {
-  flex: 1;
-  text-align: center;
+  color: #2d3748;
+  font-weight: 500;
 }
 
-.lap-difference {
-  color: #666;
-  font-size: 0.9rem;
-  min-width: 80px;
-  text-align: right;
-}
-
-@media (max-width: 600px) {
+/* 반응형 디자인 */
+@media (max-width: 480px) {
   .container {
-    padding: 10px;
+    padding: 20px;
   }
 
-  .stopwatch {
-    padding: 30px 20px;
+  h1 {
+    font-size: 2rem;
   }
 
   .time-display {
-    font-size: 3rem;
+    font-size: 2.5rem;
+    padding: 15px;
   }
 
-  .milliseconds {
-    font-size: 1.2rem;
+  .time-display span {
+    min-width: 45px;
   }
 
   .controls {
-    flex-direction: column;
-    align-items: center;
+    gap: 10px;
   }
 
   .btn {
-    width: 100%;
-    max-width: 200px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    min-width: 70px;
   }
+}
+
+/* 스크롤바 스타일 */
+.lap-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lap-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.lap-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.lap-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
